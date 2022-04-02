@@ -49,10 +49,12 @@ const musicMenu = [
 	},
 ];
 
+const playlist = new Array(30).fill(1).map((_, i) => `Playlist ${i + 1}`);
+
 const Sidebar = () => {
 	return (
 		<VStack
-			alignItems="flex-start"
+			alignItems="stretch"
 			spacing={6}
 			h="100%"
 			bg="black"
@@ -87,6 +89,37 @@ const Sidebar = () => {
 				))}
 			</List>
 			<Divider color="gray.800" />
+			<List
+				spacing={2}
+				overflowY="auto"
+				sx={{
+					'&::-webkit-scrollbar': {
+						width: '10px',
+					},
+					'&::-webkit-scrollbar-track': {
+						backgroundColor: 'transparent',
+					},
+					'&::-webkit-scrollbar-thumb': {
+						backgroundColor: 'gray.800',
+						borderRadius: '20px',
+						border: '2px solid transparent',
+						backgroundClip: 'content-box',
+					},
+					'&::-webkit-scrollbar-thumb:hover': {
+						backgroundColor: 'gray.700',
+					},
+				}}
+			>
+				{playlist.map((item) => (
+					<ListItem key={item}>
+						<LinkBox>
+							<NextLink href="/" passHref>
+								<LinkOverlay>{item}</LinkOverlay>
+							</NextLink>
+						</LinkBox>
+					</ListItem>
+				))}
+			</List>
 		</VStack>
 	);
 };
