@@ -11,13 +11,19 @@ import {
 	useBreakpointValue,
 } from '@chakra-ui/react';
 import React from 'react';
+import Router from 'next/router';
 import { auth } from '../../lib/mutations';
 
 const AuthForm: React.FC<{ mode: 'signin' | 'signup' }> = ({ mode }) => {
 	const [email, setEmail] = React.useState('');
 	const [password, setPassword] = React.useState('');
-	const handleSubmit = async () => {
+	const [isLoading, setIsLoading] = React.useState(false);
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		setIsLoading(true);
 		await auth(mode, { email, password });
+		setIsLoading(false);
+		Router.push('/');
 	};
 
 	return (
@@ -48,6 +54,7 @@ const AuthForm: React.FC<{ mode: 'signin' | 'signup' }> = ({ mode }) => {
 							<Input
 								id="email"
 								type="email"
+								required
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
 							/>
@@ -56,14 +63,19 @@ const AuthForm: React.FC<{ mode: 'signin' | 'signup' }> = ({ mode }) => {
 							<FormLabel htmlFor="password">Password</FormLabel>
 							<Input
 								id="password"
-								name="password"
+								type="password"
 								required
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 							/>
 						</FormControl>
 					</Stack>
-					<Button alignSelf="center" colorScheme="blue">
+					<Button
+						type="submit"
+						alignSelf="center"
+						colorScheme="blue"
+						isLoading={isLoading}
+					>
 						{mode === 'signin' ? 'Sign in' : 'Sign up'}
 					</Button>
 				</Stack>
