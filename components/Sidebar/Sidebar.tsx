@@ -17,6 +17,7 @@ import {
 } from 'react-icons/md';
 import NextImage from 'next/image';
 import NextLink from 'next/link';
+import { usePlaylist } from '../../lib/hooks';
 
 const navMenu = [
 	{
@@ -49,9 +50,8 @@ const musicMenu = [
 	},
 ];
 
-const playlist = new Array(30).fill(1).map((_, i) => `Playlist ${i + 1}`);
-
 const Sidebar = () => {
+	const { playlist } = usePlaylist();
 	return (
 		<VStack
 			alignItems="stretch"
@@ -111,10 +111,10 @@ const Sidebar = () => {
 				}}
 			>
 				{playlist.map((item) => (
-					<ListItem key={item}>
+					<ListItem key={item.id}>
 						<LinkBox>
 							<NextLink href="/" passHref>
-								<LinkOverlay>{item}</LinkOverlay>
+								<LinkOverlay>{item.name}</LinkOverlay>
 							</NextLink>
 						</LinkBox>
 					</ListItem>
