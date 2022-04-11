@@ -25,3 +25,7 @@ export const validateRoute = (handler) => {
 		return res.status(401).json({ error: 'Not Allowed' });
 	};
 };
+
+export const validateToken = (token) => {
+	return jwt.verify(token, 'hello');
+};
