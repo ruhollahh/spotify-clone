@@ -20,22 +20,26 @@ const GradientLayout: React.FC<{
 }) => {
 	return (
 		<VStack
-			h="full"
+			minH="full"
 			alignItems="stretch"
 			bgGradient={`linear(to-b, ${color}.500 0%, ${color}.600 15%, ${color}.700 45%, rgba(0, 0, 0, 0.95) 75%)`}
+			spacing={0}
 		>
 			<Flex gap={5} p={5} paddingTop={12}>
 				<Image
-					boxSize="3xs"
+					boxSize="160px"
+					boxShadow="2xl"
 					src={image}
-					borderRadius={isImageRound ? 'full' : 'none'}
+					borderRadius={isImageRound ? 'full' : '3px'}
 				/>
 				<VStack alignSelf="flex-end" alignItems="flex-start" color="white">
-					<Text textTransform="uppercase" fontSize="sm">
+					<Text textTransform="uppercase" fontSize="sm" fontWeight="bold">
 						{subtitle}
 					</Text>
 					<Heading fontSize="5xl">{title}</Heading>
-					<Text fontSize="sm">{description}</Text>
+					<Text fontSize="sm" fontWeight="100">
+						{description}
+					</Text>
 				</VStack>
 			</Flex>
 			<Box flexGrow={1} bgColor="blackAlpha.600">

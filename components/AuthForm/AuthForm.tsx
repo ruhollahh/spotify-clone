@@ -27,7 +27,7 @@ const AuthForm: React.FC<{ mode: 'signin' | 'signup' }> = ({ mode }) => {
 	};
 
 	return (
-		<Box w="full" h="full" bgColor="gray.900">
+		<Box w="full" minH="full" bgColor="gray.900">
 			<Container
 				maxW="lg"
 				py={{ base: '12', md: '24' }}
