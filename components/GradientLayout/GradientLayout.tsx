@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Flex, Heading, Text, VStack } from '@chakra-ui/layout';
-import { Image } from '@chakra-ui/react';
+import { Image, Skeleton } from '@chakra-ui/react';
 
 const GradientLayout: React.FC<{
 	image: string;
@@ -36,10 +36,18 @@ const GradientLayout: React.FC<{
 					<Text textTransform="uppercase" fontSize="sm" fontWeight="bold">
 						{subtitle}
 					</Text>
-					<Heading fontSize="5xl">{title}</Heading>
-					<Text fontSize="sm" fontWeight="100">
-						{description}
-					</Text>
+					{title ? (
+						<Heading fontSize="5xl">{title}</Heading>
+					) : (
+						<Skeleton h="57.6px" w="310.3px" />
+					)}
+					{description ? (
+						<Text fontSize="sm" fontWeight="100">
+							{description}
+						</Text>
+					) : (
+						<Skeleton h="21px" w="69.26px" />
+					)}
 				</VStack>
 			</Flex>
 			<Box flexGrow={1} bgColor="blackAlpha.600">

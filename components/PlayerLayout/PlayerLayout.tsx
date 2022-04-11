@@ -5,7 +5,7 @@ const PlayerLayout = ({ children }) => {
 	return (
 		<VStack alignItems="stretch" h="100%" spacing={0}>
 			<HStack alignItems="stretch" h="calc(100% - 100px)" spacing="0">
-				<Box flexBasis="250px">
+				<Box minW="250px">
 					<Sidebar />
 				</Box>
 				<Box

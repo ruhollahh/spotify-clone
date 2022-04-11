@@ -1,16 +1,19 @@
-import { Box, Heading, HStack, VStack, Text } from '@chakra-ui/layout';
+import { Box, Heading, VStack, Text, Flex } from '@chakra-ui/layout';
 import { Artist } from '@prisma/client';
 import { Image } from '@chakra-ui/react';
 import { GradientLayout } from '../components/GradientLayout';
 import { prisma } from '../lib/prisma';
+import { useMe } from '../lib/hooks';
 
 const Home = ({ artists }) => {
+	const { user } = useMe();
+
 	return (
 		<GradientLayout
-			image="https://placekitten.com/300/300"
-			title="Dan Abramov"
+			image="https://d2eip9sf3oo6c2.cloudfront.net/instructors/avatars/000/000/032/medium/oapgW_Fp_400x400.jpg"
+			title={user && `${user.firstName} ${user.lastName}`}
 			subtitle="profile"
-			description="11 followers"
+			description={user && `${user.playlistCount} playlists`}
 			color="gray"
 			isImageRound
 		>
@@ -19,10 +22,11 @@ const Home = ({ artists }) => {
 					<Heading fontSize="xl">Top artists this month</Heading>
 					<Text>only visible to you</Text>
 				</Box>
-				<HStack>
+				<Flex gap={5} wrap="wrap">
 					{artists.map((artist: Artist) => (
 						<VStack
 							key={artist.id}
+							flexBasis="200px"
 							spacing={7}
 							p={5}
 							bgColor="gray.900"
@@ -39,7 +43,7 @@ const Home = ({ artists }) => {
 							</VStack>
 						</VStack>
 					))}
-				</HStack>
+				</Flex>
 			</VStack>
 		</GradientLayout>
 	);
