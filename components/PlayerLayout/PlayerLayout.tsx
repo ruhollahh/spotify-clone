@@ -8,28 +8,7 @@ const PlayerLayout = ({ children }) => {
 				<Box minW="250px">
 					<Sidebar />
 				</Box>
-				<Box
-					flexGrow={1}
-					h="100%"
-					overflowY="auto"
-					sx={{
-						'&::-webkit-scrollbar': {
-							width: '10px',
-						},
-						'&::-webkit-scrollbar-track': {
-							backgroundColor: 'transparent',
-						},
-						'&::-webkit-scrollbar-thumb': {
-							backgroundColor: 'gray.800',
-							borderRadius: '20px',
-							border: '2px solid transparent',
-							backgroundClip: 'content-box',
-						},
-						'&::-webkit-scrollbar-thumb:hover': {
-							backgroundColor: 'gray.700',
-						},
-					}}
-				>
+				<Box flexGrow={1} h="100%">
 					{children}
 				</Box>
 			</HStack>

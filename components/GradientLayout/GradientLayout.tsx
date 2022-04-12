@@ -20,12 +20,12 @@ const GradientLayout: React.FC<{
 }) => {
 	return (
 		<VStack
-			minH="full"
+			h="full"
 			alignItems="stretch"
 			bgGradient={`linear(to-b, ${color}.500 0%, ${color}.600 15%, ${color}.700 45%, rgba(0, 0, 0, 0.95) 75%)`}
 			spacing={0}
 		>
-			<Flex gap={5} p={5} paddingTop={12}>
+			<Flex gap={5} p={10} paddingTop={12}>
 				<Image
 					boxSize="160px"
 					boxShadow="2xl"
@@ -50,7 +50,28 @@ const GradientLayout: React.FC<{
 					)}
 				</VStack>
 			</Flex>
-			<Box flexGrow={1} bgColor="blackAlpha.600">
+			<Box
+				flexGrow={1}
+				bgColor="blackAlpha.600"
+				overflowY="auto"
+				sx={{
+					'&::-webkit-scrollbar': {
+						width: '10px',
+					},
+					'&::-webkit-scrollbar-track': {
+						backgroundColor: 'transparent',
+					},
+					'&::-webkit-scrollbar-thumb': {
+						backgroundColor: 'gray.800',
+						borderRadius: '20px',
+						border: '2px solid transparent',
+						backgroundClip: 'content-box',
+					},
+					'&::-webkit-scrollbar-thumb:hover': {
+						backgroundColor: 'gray.700',
+					},
+				}}
+			>
 				{children}
 			</Box>
 		</VStack>
