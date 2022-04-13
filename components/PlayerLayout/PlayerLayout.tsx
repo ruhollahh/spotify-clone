@@ -1,4 +1,5 @@
 import { Box, HStack, VStack } from '@chakra-ui/layout';
+import { PlayerBar } from '../PlayerBar';
 import { Sidebar } from '../Sidebar';
 
 const PlayerLayout = ({ children }) => {
@@ -12,7 +13,9 @@ const PlayerLayout = ({ children }) => {
 					{children}
 				</Box>
 			</HStack>
-			<Box minH="100px">Player</Box>
+			<Box minH="100px">
+				<PlayerBar />
+			</Box>
 		</VStack>
 	);
 };

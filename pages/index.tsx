@@ -4,6 +4,7 @@ import { Image } from '@chakra-ui/react';
 import { GradientLayout } from '../components/GradientLayout';
 import { prisma } from '../lib/prisma';
 import { useMe } from '../lib/hooks';
+import { validateToken } from '../lib/auth';
 
 const Home = ({ artists }) => {
 	const { user } = useMe();
@@ -49,7 +50,18 @@ const Home = ({ artists }) => {
 	);
 };
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async ({ req }) => {
+	try {
+		validateToken(req.cookies.access_token);
+	} catch (e) {
+		return {
+			redirect: {
+				permanent: false,
+				destination: '/signin',
+			},
+		};
+	}
+
 	const artists = await prisma.artist.findMany({});
 
 	return {
