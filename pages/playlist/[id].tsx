@@ -17,7 +17,6 @@ const generateRandomColor = (id) => {
 		'purple',
 		'orange',
 		'cyan',
-		'indigo',
 	];
 	return colors[id - 1] || colors[Math.floor(Math.random() * colors.length)];
 };
