@@ -2,6 +2,7 @@ import { Box, Flex } from '@chakra-ui/layout';
 import { IconButton, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { BsFillPlayFill } from 'react-icons/bs';
 import { AiOutlineClockCircle } from 'react-icons/ai';
+import { useStoreActions } from 'easy-peasy';
 import { GradientLayout } from '../../components/GradientLayout';
 import { validateToken } from '../../lib/auth';
 import { prisma } from '../../lib/prisma';
@@ -22,6 +23,19 @@ const generateRandomColor = (id) => {
 };
 
 const Playlist = ({ playlist }) => {
+	const changeActiveSongs = useStoreActions(
+		(store: any) => store.changeActiveSongs
+	);
+	const changeActiveSong = useStoreActions(
+		(store: any) => store.changeActiveSong
+	);
+
+	const handlePlay = (song?) => {
+		const { songs } = playlist;
+		changeActiveSong(song ?? songs[0]);
+		changeActiveSongs(songs);
+	};
+
 	return (
 		<GradientLayout
 			color={generateRandomColor(playlist.id)}
@@ -38,6 +52,7 @@ const Playlist = ({ playlist }) => {
 						icon={<BsFillPlayFill size={30} />}
 						isRound
 						colorScheme="green"
+						onClick={() => handlePlay()}
 					/>
 				</Box>
 				<Table variant="unstyled">
@@ -62,6 +77,7 @@ const Playlist = ({ playlist }) => {
 									},
 								}}
 								cursor="pointer"
+								onClick={() => handlePlay(song)}
 							>
 								<Td>{i + 1}</Td>
 								<Td>{song.name}</Td>

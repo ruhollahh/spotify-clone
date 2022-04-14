@@ -1,4 +1,5 @@
 import { Box, HStack, VStack } from '@chakra-ui/layout';
+
 import { PlayerBar } from '../PlayerBar';
 import { Sidebar } from '../Sidebar';
 
