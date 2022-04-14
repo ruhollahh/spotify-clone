@@ -23,7 +23,7 @@ const GradientLayout: React.FC<{
 			h="full"
 			alignItems="stretch"
 			bgGradient={`linear(to-b, ${color}.500 0%, ${color}.600 15%, ${color}.700 45%, rgba(0, 0, 0, 0.95) 75%)`}
-			spacing={0}
+			spacing="0"
 		>
 			<Flex gap={5} p={10} paddingTop={12}>
 				<Image

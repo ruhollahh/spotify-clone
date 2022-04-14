@@ -18,15 +18,94 @@ import {
 	BsShuffle,
 } from 'react-icons/bs';
 import React from 'react';
+import { useStoreActions } from 'easy-peasy';
+import { formatSongDuration } from '../../lib/formatter';
 
 export const Player = ({ activeSong, activeSongs }) => {
+	const howlerRef = React.useRef(null);
+	const changeActiveSong = useStoreActions(
+		(store: any) => store.changeActiveSong
+	);
 	const [isPlaying, setIsPlaying] = React.useState(true);
 	const [isShuffle, setIsShuffle] = React.useState(false);
 	const [isRepeat, setIsRepeat] = React.useState(false);
+	const isRepeatRef = React.useRef(false);
+	const [index, setIndex] = React.useState(activeSongs.indexOf(activeSong));
+	const [duration, setDuration] = React.useState(0);
+	const [seek, setSeek] = React.useState(0);
+	const [isSeeking, setIsSeeking] = React.useState(false);
+
+	React.useEffect(() => {
+		let requestId;
+		if (isPlaying && !isSeeking) {
+			const f = () => {
+				setSeek(howlerRef.current?.seek().toFixed(2));
+				requestId = requestAnimationFrame(f);
+			};
+			requestId = requestAnimationFrame(f);
+		}
+		return () => cancelAnimationFrame(requestId);
+	}, [isPlaying, isSeeking]);
+
+	React.useEffect(() => {
+		isRepeatRef.current = isRepeat;
+	}, [isRepeat]);
+
+	React.useEffect(() => {
+		changeActiveSong(activeSongs[index]);
+	}, [activeSongs, changeActiveSong, index]);
+
+	const handleLoad = () => {
+		setDuration(howlerRef.current.duration().toFixed(2));
+	};
+
+	const handleSeekChange = (values) => {
+		setSeek(values[0]);
+		howlerRef.current?.seek(values[0]);
+	};
+
+	const handlePrev = () => {
+		setIndex((prevIndex) =>
+			prevIndex ? prevIndex - 1 : activeSongs.length - 1
+		);
+	};
+
+	const getRandomIndex = (prevIndex) => {
+		const randomIndex = Math.floor(Math.random() * activeSongs.length);
+
+		if (randomIndex === prevIndex) {
+			return getRandomIndex(prevIndex);
+		}
+		return randomIndex;
+	};
+
+	const handleNext = () => {
+		if (isShuffle) {
+			return setIndex((prevIndex) => getRandomIndex(prevIndex));
+		}
+		setIndex((prevIndex) =>
+			prevIndex === activeSongs.length - 1 ? 0 : index + 1
+		);
+	};
+
+	const handleSongEnd = () => {
+		if (isRepeatRef.current) {
+			setSeek(0);
+			howlerRef.current.seek(0);
+		} else {
+			handleNext();
+		}
+	};
 
 	return (
 		<Box>
-			<ReactHowler playing={isPlaying} src={activeSong.url} />
+			<ReactHowler
+				ref={howlerRef}
+				playing={isPlaying}
+				src={activeSong.url}
+				onLoad={handleLoad}
+				onEnd={handleSongEnd}
+			/>
 			<Center>
 				<ButtonGroup variant="link" fontSize={24}>
 					<IconButton
@@ -39,6 +118,7 @@ export const Player = ({ activeSong, activeSongs }) => {
 						aria-label="previous"
 						icon={<BsFillSkipStartFill />}
 						color="gray.600"
+						onClick={handlePrev}
 					/>
 					{isPlaying ? (
 						<IconButton
@@ -61,6 +141,7 @@ export const Player = ({ activeSong, activeSongs }) => {
 						aria-label="next"
 						icon={<BsFillSkipEndFill />}
 						color="gray.600"
+						onClick={handleNext}
 					/>
 					<IconButton
 						aria-label="repeat"
@@ -71,20 +152,24 @@ export const Player = ({ activeSong, activeSongs }) => {
 				</ButtonGroup>
 			</Center>
 			<HStack spacing={4}>
-				<Text>1:23</Text>
+				<Text>{formatSongDuration(seek)}</Text>
 				<RangeSlider
 					flexGrow={1}
 					min={0}
-					max={300}
+					max={duration}
 					step={0.1}
 					aria-label={['seekbar']}
+					onChange={handleSeekChange}
+					onChangeStart={() => setIsSeeking(true)}
+					onChangeEnd={() => setIsSeeking(false)}
+					value={[seek]}
 				>
 					<RangeSliderTrack bgColor="gray.600">
 						<RangeSliderFilledTrack bgColor="gray.300" />
 					</RangeSliderTrack>
 					<RangeSliderThumb index={0} />
 				</RangeSlider>
-				<Text>3:54</Text>
+				<Text>{formatSongDuration(duration)}</Text>
 			</HStack>
 		</Box>
 	);
